@@ -41,7 +41,7 @@ t.join();
 
 ## Examples
 
-Execute following script to compile examples. 
+Execute following script to compile examples. (tested on gcc 4.8)
 
 ```bash
 git clone https://github.com/lime62/concurrent_queue.git
