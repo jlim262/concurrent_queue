@@ -63,6 +63,13 @@ namespace lime62 {
                 queue_.pop();
         }
 
+        void front_pop(T& ret) {
+            std::unique_lock<std::mutex> lock(this->mutex_);
+            wait(lock);
+            ret = queue_.front();
+            queue_.pop();
+        }
+
         size_type size() const {
             std::unique_lock<std::mutex> lock(this->mutex_);
             return queue_.size();

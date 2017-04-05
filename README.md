@@ -23,8 +23,8 @@ using lime62::concurrent_queue;
 auto pop_task = [](concurrent_queue<int>* q) {
     try {
         std::cout << "It waits until something is pushed in the queue.\n";
-        int v = q->front();
-        q->pop();
+        int v;
+        q->front_pop(v);
         std::cout << "Got a value(" << v << ")\n";
     } catch (std::runtime_error re) {
         std::cout << re.what() << std::endl;

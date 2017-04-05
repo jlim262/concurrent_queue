@@ -10,8 +10,8 @@ int main() {
     auto pop_task = [](concurrent_queue<int> *q, int n) {
         for (int i = 0; i < n; i++) {
             try {
-                q->front();
-                q->pop();
+                int v;
+                q->front_pop(v);
             } catch (std::runtime_error re) {
                 std::cout << re.what() << std::endl;
             }
