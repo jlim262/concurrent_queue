@@ -2,6 +2,7 @@
 #include <thread>
 #include "../concurrent_queue.hpp"
 
+#define NUM_OF_THREAD 4
 #define COUNT 100000
 
 using lime62::concurrent_queue;
@@ -25,11 +26,24 @@ int main() {
     };
 
     concurrent_queue<int> queue;
-    std::thread producer(push_task, &queue, COUNT);
-    std::thread consumer(pop_task, &queue, COUNT);
-    producer.join();
-    consumer.join();
+    std::vector<std::thread> producers;
+    std::vector<std::thread> consumers;
 
+    // consumers will wait until something is available in the queue
+    for (int i=0; i<NUM_OF_THREAD; i++)
+        consumers.emplace_back(pop_task, &queue, COUNT);
+
+    // producers will put something in the queue
+    for (int i=0; i<NUM_OF_THREAD; i++)
+        producers.emplace_back(push_task, &queue, COUNT);
+
+    // wait until they finish
+    for (std::thread& producer : producers)
+        producer.join();
+    for (std::thread& consumer : consumers)
+        consumer.join();
+
+    // produced count should be same as consumed count
     if (!queue.empty())
         std::cout << "Failed. It should consume all\n";
 
