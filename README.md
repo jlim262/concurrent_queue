@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/lime62/concurrent_queue.svg?branch=master)](https://travis-ci.org/lime62/concurrent_queue)
 
 # A simple C++11 Concurrent Queue based on std::queue.
 
