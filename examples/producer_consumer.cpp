@@ -1,8 +1,10 @@
 #include <iostream>
-#include <boost/thread/thread.hpp>
-#include "src/concurrent_queue.hpp"
+#include <thread>
+#include "../concurrent_queue.hpp"
 
-using namespace lime62;
+#define COUNT 100000
+
+using lime62::concurrent_queue;
 
 int main() {
     auto pop_task = [](concurrent_queue<int> *q, int n) {
@@ -23,20 +25,14 @@ int main() {
     };
 
     concurrent_queue<int> queue;
-    boost::thread_group producers;
-    boost::thread_group consumers;
+    std::thread producer(push_task, &queue, COUNT);
+    std::thread consumer(pop_task, &queue, COUNT);
+    producer.join();
+    consumer.join();
 
-    for (int i = 0; i < 5; i++) {
-        producers.create_thread(boost::bind<void>(push_task, &queue, 100000));
-    }
-    for (int i = 0; i < 5; i++) {
-        consumers.create_thread(boost::bind<void>(pop_task, &queue, 100000));
-    }
+    if (!queue.empty())
+        std::cout << "Failed. It should consume all\n";
 
-    producers.join_all();
-    consumers.join_all();
-
-    assert(queue.empty());
-
+    std::cout << "Succeeded. Consumed all.\n";
     return 0;
 }
