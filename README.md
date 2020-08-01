@@ -44,7 +44,7 @@ t.join();
 Execute following script to compile examples. (tested on gcc 4.8)
 
 ```bash
-git clone https://github.com/lime62/concurrent_queue.git
+git clone https://github.com/jlim262/concurrent_queue.git
 cd concurrent_queue
 mkdir build
 cd build 
